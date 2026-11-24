@@ -1,0 +1,15 @@
+{
+  "name": "obsidian-cage-board",
+  "version": "1.2.0",
+  "description": "Cage management board for animal facilities (Obsidian plugin).",
+  "main": "main.js",
+  "keywords": [
+    "obsidian",
+    "obsidian-plugin",
+    "cage",
+    "animal-facility",
+    "board"
+  ],
+  "author": "caoqiuyu",
+  "license": "MIT"
+}

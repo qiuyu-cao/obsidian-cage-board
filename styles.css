@@ -1,0 +1,338 @@
+/* ============ 笼位看板 Cage Board ============ */
+.cage-board-root {
+  padding: 12px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+/* ---- 筛选按钮行 ---- */
+.cb-filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.cb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-normal);
+  font-size: var(--font-ui-small);
+  line-height: 1.4;
+  cursor: pointer;
+  box-shadow: none;
+  white-space: nowrap;
+}
+.cb-chip:hover { background: var(--background-modifier-hover); }
+.cb-chip-active,
+.cb-chip-active:hover {
+  background: var(--interactive-accent);
+  border-color: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+.cb-chip-count {
+  font-weight: 700;
+  font-size: 12px;
+  opacity: 0.85;
+}
+.cb-chip-caret { font-size: 10px; opacity: 0.7; }
+.cb-proj-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: var(--layer-popover, 100);
+  min-width: 240px;
+  max-height: 320px;
+  overflow: auto;
+  padding: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+}
+.cb-proj-menu.cb-open { display: block; }
+.cb-proj-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 8px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: var(--font-ui-small);
+  color: var(--text-normal);
+}
+.cb-proj-option:hover { background: var(--background-modifier-hover); }
+.cb-proj-active {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+.cb-proj-active:hover { background: var(--interactive-accent); }
+
+/* ---- 分组 ---- */
+.cb-rack-group {
+  margin-bottom: 14px;
+}
+.cb-rack-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 8px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+/* ---- 卡片网格 ---- */
+.cb-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+.cb-density-compact .cb-card { padding: 6px 8px; }
+.cb-density-compact { font-size: 12px; }
+.cb-density-roomy .cb-card { padding: 14px 16px; }
+
+/* ---- 卡片 ---- */
+.cb-card {
+  border: 1px solid var(--background-modifier-border);
+  border-radius: 10px;
+  background: var(--background-primary);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+/* 到期提醒：有逾期未完成任务 → 红边；今天到期 → 绿边；明天到期 → 橘黄边 */
+.cb-card-due-overdue {
+  border-color: var(--color-red, #e93147);
+  box-shadow: 0 0 0 1px var(--color-red, #e93147);
+}
+.cb-card-due-today {
+  border-color: var(--color-green, #08b94e);
+  box-shadow: 0 0 0 1px var(--color-green, #08b94e);
+}
+.cb-card-due-tomorrow {
+  border-color: var(--color-orange, #f08a00);
+  box-shadow: 0 0 0 1px var(--color-orange, #f08a00);
+}
+.cb-card-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+.cb-card-head:hover .cb-card-title {
+  color: var(--text-accent);
+}
+.cb-card-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-normal);
+}
+.cb-badge {
+  font-size: 11px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+.cb-badge-mice { background: var(--background-modifier-border); color: var(--text-normal); }
+.cb-badge-purpose { background: var(--color-blue); color: #fff; }
+.cb-badge-status-online { background: var(--color-green); color: #fff; }
+.cb-badge-status-offline { background: var(--background-modifier-border); color: var(--text-muted); }
+
+/* ---- properties ---- */
+.cb-props {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  font-size: 12px;
+}
+.cb-prop-label { color: var(--text-muted); white-space: nowrap; }
+.cb-prop-value { color: var(--text-normal); word-break: break-word; }
+
+/* ---- project 行：拖入笔记的投放目标（拖动中整行高亮） ---- */
+.cb-drop-hover {
+  background: var(--background-modifier-hover);
+  box-shadow: inset 0 0 0 1px var(--interactive-accent);
+  border-radius: var(--radius-s);
+  cursor: copy;
+}
+
+/* ---- project 值右端的 × 清空按钮 ---- */
+.cb-prop-clear {
+  margin-left: 6px;
+  padding: 0 4px;
+  border-radius: var(--radius-s);
+  color: var(--text-faint);
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+  user-select: none;
+}
+.cb-prop-clear:hover {
+  color: var(--text-on-accent);
+  background: var(--text-error);
+  text-decoration: none;
+}
+
+/* ---- 分区标题 ---- */
+.cb-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-top: 1px dashed var(--background-modifier-border);
+  padding-top: 4px;
+  margin-top: 2px;
+}
+
+/* ---- 小鼠（仿原生数据库表格） ---- */
+.cb-mice-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--table-border-color, var(--background-modifier-border));
+  border-radius: 6px;
+}
+.cb-mice-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.cb-mice-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--table-border-color, var(--background-modifier-border));
+  white-space: nowrap;
+}
+.cb-mice-table td {
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--table-border-color, var(--background-modifier-border));
+  color: var(--text-normal);
+  white-space: nowrap;
+}
+.cb-mice-table tbody tr:last-child td { border-bottom: none; }
+.cb-mice-table tbody tr { cursor: pointer; }
+.cb-mice-table tbody tr:hover td { background: var(--background-modifier-hover); }
+.cb-mice-table td.cb-mouse-id { font-weight: 600; color: var(--text-accent); }
+.cb-mice-table tr.cb-mouse-prov td { color: var(--text-warning); font-weight: 600; }
+.cb-empty-mice { font-size: 12px; color: var(--text-faint); font-style: italic; }
+
+/* ---- Timeline（原生 list 样式） ---- */
+.cb-timeline { font-size: 12px; }
+.cb-timeline ul { list-style: none; margin: 0; padding: 0; }
+.cb-timeline .task-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+.cb-timeline .task-list-item:hover { background: var(--background-modifier-hover); }
+.cb-timeline li.task-list-item { min-width: 0; max-width: 100%; }
+.cb-timeline .task-list-item-checkbox {
+  margin: 2px 6px 0 0 !important; /* 覆盖原生负外边距，防止越出卡片边框 */
+  flex-shrink: 0;
+  width: var(--checkbox-size, 15px);
+  height: var(--checkbox-size, 15px);
+  accent-color: var(--checkbox-color, var(--interactive-accent));
+  cursor: pointer; /* 可点击：勾选后写回笼位笔记 */
+}
+.cb-timeline .task-list-item-checkbox:disabled { cursor: progress; }
+.cb-timeline .task-list-item.is-checked .cb-task-text {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+.cb-task-text { flex: 1; min-width: 0; word-break: break-word; overflow-wrap: anywhere; }
+.cb-task-date { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
+/* Tasks 风格日期：与 Tasks 插件同名类（task-due/task-done），逾期红、今天橙 */
+.cb-timeline li[data-task-due^="past-"] .task-due { color: var(--color-red, #e93147); font-weight: 600; }
+.cb-timeline li[data-task-due="today"] .task-due { color: var(--color-orange, #f08a00); font-weight: 600; }
+.cb-timeline a.internal-link { cursor: pointer; }
+/* 可拖拽生成 [[wikilink]] 的锚点：笼位名 / 小鼠编号 */
+.cb-card-title.internal-link, .cb-mice-table td a.internal-link { cursor: grab; }
+.cb-card-title.internal-link:active, .cb-mice-table td a.internal-link:active { cursor: grabbing; }
+.cb-task-more { font-size: 11px; color: var(--text-faint); padding: 2px 4px; }
+
+/* ---- 内部链接（悬停预览） ---- */
+.cb-card-title.internal-link { color: inherit; text-decoration: none; }
+.cb-card-title.internal-link:hover { color: var(--text-accent); }
+.cb-mice-table td a.internal-link { color: var(--text-accent); text-decoration: none; }
+.cb-mice-table td a.internal-link:hover { text-decoration: underline; }
+.cb-timeline a.internal-link { color: var(--text-accent); text-decoration: none; }
+.cb-timeline a.internal-link:hover { text-decoration: underline; }
+/* frontmatter 里的 [[wikilink]] 渲染结果 */
+.cb-prop-value a.internal-link { color: var(--text-accent); text-decoration: none; }
+.cb-prop-value a.internal-link:hover { text-decoration: underline; }
+.cb-badge a.internal-link { color: inherit; text-decoration: none; cursor: pointer; }
+.cb-badge a.internal-link:hover { text-decoration: underline; }
+
+.cb-empty { color: var(--text-muted); padding: 24px; text-align: center; }
+
+/* ---- 手机：强制单列 ---- */
+@media (max-width: 600px) {
+  .cb-grid { grid-template-columns: 1fr !important; }
+  .cb-filterbar { gap: 6px; }
+  .cb-chip { padding: 3px 10px; }
+}
+
+/* ---------------- 搜索栏 ---------------- */
+.cb-searchbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: relative;
+  margin: 0 0 10px 0;
+}
+.cb-search-domains {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.cb-search-input {
+  flex: 1 1 150px;
+  min-width: 120px;
+  max-width: 360px;
+}
+.cb-search-clear {
+  flex-shrink: 0;
+  padding: 2px 8px;
+}
+.cb-search-count {
+  color: var(--text-muted);
+  font-size: var(--font-ui-smaller);
+  white-space: nowrap;
+}
+.cb-search-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: var(--layer-popover, 100);
+  min-width: 210px;
+  max-height: 320px;
+  overflow: auto;
+  padding: 4px;
+  background: var(--background-primary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-s);
+}
+.cb-search-menu.cb-open { display: block; }
+.cb-search-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: var(--font-ui-small);
+  color: var(--text-normal);
+}
+.cb-search-option:hover { background: var(--background-modifier-hover); }
+.cb-search-option input[type="checkbox"] { margin: 0; flex-shrink: 0; }

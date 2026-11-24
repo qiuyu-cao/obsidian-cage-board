@@ -1,0 +1,10 @@
+# Personal plugin settings — never commit
+data.json
+
+# Dependencies / build output
+node_modules/
+dist/
+
+# Logs / OS noise
+*.log
+.DS_Store

@@ -4,6 +4,7 @@
   "version": "1.2.0",
   "minAppVersion": "1.4.0",
   "description": "Manage animal facility cages on a board: filter by today's tasks, overdue, upcoming, and project, with one card per cage.",
-  "author": "caoqiuyu",
+  "author": "qiuyu-cao",
+  "authorUrl": "https://github.com/qiuyu-cao",
   "isDesktopOnly": false
 }

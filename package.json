@@ -10,6 +10,10 @@
     "animal-facility",
     "board"
   ],
-  "author": "caoqiuyu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qiuyu-cao/obsidian-cage-board.git"
+  },
+  "author": "qiuyu-cao",
   "license": "MIT"
 }
